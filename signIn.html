@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Bootstrap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .signup-card {
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .signup-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .signup-header i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .signup-body {
+            padding: 2rem;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #65438f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .password-requirements {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .password-requirements ul {
+            margin-bottom: 0;
+            padding-left: 1.2rem;
+        }
+        .password-requirements li {
+            margin-bottom: 0.3rem;
+        }
+        .alert {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card signup-card">
+                    <div class="signup-header">
+                        <i class="bi bi-person-plus"></i>
+                        <h2 class="mb-0">Crear cuenta</h2>
+                        <p class="mb-0">Regístrate para comenzar</p>
+                    </div>
+                    <div class="signup-body">
+                        <div id="alertContainer"></div>
+                        
+                        <form id="signupForm">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" placeholder="tu@email.com" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                                </div>
+                                <div class="password-requirements">
+                                    <small>
+                                        <ul>
+                                            <li>Mínimo 6 caracteres</li>
+                                            <li>Al menos una letra y un número</li>
+                                        </ul>
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="terms" required>
+                                <label class="form-check-label" for="terms">
+                                    Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 mb-3" id="submitBtn">
+                                <i class="bi bi-person-check me-2"></i>
+                                Registrarse
+                            </button>
+
+                            <div class="text-center">
+                                <small class="text-muted">
+                                    ¿Ya tienes una cuenta? 
+                                    <a href="login.html" class="text-decoration-none fw-bold">Inicia sesión</a>
+                                </small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://vlbdporkjtogegumkgnk.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsYmRwb3JranRvZ2VndW1rZ25rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2ODA4MTQsImV4cCI6MjA2MDI1NjgxNH0.o8jYc7kysOq7qVV7W8wCHtIw_ioRnZMKCW2AJIWo9uo";
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const alertContainer = document.getElementById('alertContainer');
+        const signupForm = document.getElementById('signupForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function showAlert(message, type = 'danger') {
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}-fill me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+        }
+
+        function validatePassword(password) {
+            // Validar que tenga al menos 6 caracteres
+            if (password.length < 6) {
+                return 'La contraseña debe tener al menos 6 caracteres';
+            }
+            // Validar que tenga al menos una letra y un número
+            const hasLetter = /[a-zA-Z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            
+            if (!hasLetter || !hasNumber) {
+                return 'La contraseña debe contener al menos una letra y un número';
+            }
+            return null;
+        }
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validar contraseñas
+            if (password !== confirmPassword) {
+                showAlert('Las contraseñas no coinciden');
+                return;
+            }
+
+            const passwordError = validatePassword(password);
+            if (passwordError) {
+                showAlert(passwordError);
+                return;
+            }
+
+            // Deshabilitar botón y mostrar loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creando cuenta...';
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    showAlert('Error al crear la cuenta: ' + error.message);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="bi bi-person-check me-2"></i>Registrarse';
+                } else {
+                    showAlert('¡Cuenta creada exitosamente! Revisa tu correo para verificar tu cuenta.', 'success');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="bi bi-person-check me-2"></i>Registrarse';
+                    
+                    // Limpiar formulario
+                    signupForm.reset();
+                    
+                    // Redirigir al login después de 3 segundos
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                }
+            } catch (error) {
+                showAlert('Error al conectar con el servidor');
+                console.error('Error:', error);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-person-check me-2"></i>Registrarse';
+            }
+        });
+
+        // Verificar si ya hay una sesión activa
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                console.log('Sesión activa encontrada');
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
